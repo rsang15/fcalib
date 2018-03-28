@@ -57,51 +57,6 @@ above context, add implications to it, and compute next-closure:
   mySet = implications.nextClosure(mySet);
 ```
 
-
-### Source code
-
-To checkout and compile the project, use:
-
-```
-$ git clone https://github.com/julianmendez/fcalib.git
-$ cd fcalib
-$ mvn clean install
-```
-
-To compile the project offline, first download the dependencies:
-
-```
-$ mvn dependency:go-offline
-```
-
-and once offline, use:
-
-```
-$ mvn --offline clean install
-```
-
-The bundles uploaded to [Sonatype](https://oss.sonatype.org/) are created with:
-
-```
-$ mvn clean install -DperformRelease=true
-```
-
-and then:
-
-```
-$ cd target
-$ jar -cf bundle.jar fcalib-*
-```
-
-The version number is updated with:
-
-```
-$ mvn versions:set -DnewVersion=NEW_VERSION
-```
-
-where *NEW_VERSION* is the new version.
-
-
 ## License
 
 [GNU General Public License version 3.0](https://www.gnu.org/licenses/gpl-3.0.txt)
