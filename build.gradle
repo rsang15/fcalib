@@ -1,0 +1,19 @@
+plugins {
+	id 'java'
+	id 'jacoco'
+	id 'info.solidsoft.pitest' version '1.3.0'
+}
+
+repositories {        
+     jcenter()
+}
+
+dependencies {
+    compile 'log4j:log4j:1.2.16'
+    testCompile 'junit:junit:4.12'
+}
+
+pitest {
+    targetClasses = ['de.tudresden.inf.tcs.*']
+    threads = 4
+}
