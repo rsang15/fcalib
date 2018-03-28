@@ -2,26 +2,6 @@
 
 *Library for Formal Concept Analysis*
 
-[![build](https://travis-ci.org/julianmendez/fcalib.png?branch=master)](https://travis-ci.org/julianmendez/fcalib)
-[![maven central](https://maven-badges.herokuapp.com/maven-central/de.tu-dresden.inf.lat.fcalib/fcalib/badge.svg)](https://search.maven.org/#search|ga|1|g%3A%22de.tu-dresden.inf.lat.fcalib%22)
-[![license](https://img.shields.io/badge/license-LGPL%203.0-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0.txt)
-
-
-## Download
-
-* [library JAR file](https://sourceforge.net/projects/latitude/files/fcalib/0.11.0/fcalib-0.11.0.jar/download)
-* [The Central Repository](https://repo1.maven.org/maven2/de/tu-dresden/inf/lat/fcalib/)
-* as dependency:
-
-```xml
-<dependency>
-  <groupId>de.tu-dresden.inf.lat.fcalib</groupId>
-  <artifactId>fcalib</artifactId>
-  <version>0.11.0</version>
-</dependency>
-```
-
-
 ## Overview
 
 **FCAlib** is an open-source, extensible library for Formal Concept Analysis (FCA) tool developers. It provides basic functionalities that are needed for building an FCA tool. It supports incomplete contexts and includes efficient implementations of basic FCA algorithms like implicational closure, next-closed set, etc. It implements the attribute exploration algorithm in such a way that it can be used together with a custom implemented expert. 
