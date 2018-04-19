@@ -26,7 +26,7 @@ import de.tudresden.inf.tcs.fcaapi.change.ContextChange;
  */
 
 
-class HistoryManager<A,B extends ContextChange<A>> extends ArrayList<ContextChange<A>> {
+public class HistoryManager<A,B extends ContextChange<A>> extends ArrayList<ContextChange<A>> {
 	
 	private static final long serialVersionUID = 1L;
 
