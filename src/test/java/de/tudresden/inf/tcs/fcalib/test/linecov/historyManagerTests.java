@@ -50,8 +50,8 @@ public class historyManagerTests<B> {
 	}
 	@Test
 	public void objectchangedtest(){
-		//objchange.getObject();
-		//objchange.getType();
+		objchange.getObject();
+		objchange.getType();
 		
 		//objchange.undo();
 	}
