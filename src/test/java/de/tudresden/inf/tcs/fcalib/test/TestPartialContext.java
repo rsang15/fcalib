@@ -45,7 +45,7 @@ public class TestPartialContext extends TestCase {
 
 		PartialContext<String, String, PartialObject<String, String>> context = new PartialContext<>();
 		NoExpertPartial<String> expert = new NoExpertPartial<>(context);
-
+		
 		context.addAttribute("a");
 		context.addAttribute("b");
 		context.addAttribute("c");
@@ -53,6 +53,22 @@ public class TestPartialContext extends TestCase {
 		// context.addAttribute("e");
 		// context.addAttribute("f");
 		// context.addAttribute("g");
+		context.getAttributeAtIndex(0);
+		//context.getAttributeAtIndex(10);
+		context.getCurrentQuestion();
+		context.getObject("a");
+		//context.getExpert().notify();
+		context.getAttributeCount();
+		context.getObjectCount();
+		context.clearObjects();
+		context.getStemBase();
+		//context.notify();
+		//context.notifyAll();
+		context.getDuquenneGuiguesBase();
+		context.getAttributes();
+		//context.getObjectAtIndex(0);
+		//context.getObjectAtIndex(10);
+
 		System.out.println("Attributes: " + context.getAttributes());
 
 		expert.addExpertActionListener(context);

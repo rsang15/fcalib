@@ -45,7 +45,7 @@ public class TestFormalContext extends TestCase {
 
 		FormalContext<String, String> context = new FormalContext<>();
 		NoExpertFull<String> expert = new NoExpertFull<>(context);
-
+		
 		context.addAttribute("a");
 		context.addAttribute("b");
 		context.addAttribute("c");
@@ -55,7 +55,7 @@ public class TestFormalContext extends TestCase {
 		// context.addAttribute("g");
 		System.out.println("Attributes: " + context.getAttributes());
 		//test getters 
-		context.getAttributeAtIndex(0);
+		context.getAttributeAtIndex(1);
 		context.getAttributeCount();
 		context.getExpert();
 		context.getConceptLattice();
@@ -69,6 +69,7 @@ public class TestFormalContext extends TestCase {
 		context.getCurrentQuestion();
 		context.getConcepts();
 		context.getObjectCount();
+		context.getExtents();
 		
 		expert.addExpertActionListener(context);
 		context.setExpert(expert);
