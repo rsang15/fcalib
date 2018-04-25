@@ -97,6 +97,8 @@ public class NoExpertPartial<A> extends AbstractExpert<A,String,PartialObject<A,
 		 action.setContext(theContext);
 		 action.setQuestion(question);
 		 fireExpertAction(action);
+		 action.getContext();
+		 action.isEnabled();
 	}
 
 	// @Override

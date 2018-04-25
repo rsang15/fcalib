@@ -1,6 +1,8 @@
 package de.tudresden.inf.tcs.fcalib.test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -27,7 +29,8 @@ import de.tudresden.inf.tcs.fcalib.utils.ListSet;
  */
 
 public class TestListSet extends TestCase {
-
+	 
+	List<String> list4 = Arrays.asList("Lars", "Simon");
 	public TestListSet() {
 	}
 
@@ -42,6 +45,21 @@ public class TestListSet extends TestCase {
 	}
 
 	public void testListSet() {
+		List<String> list4 = Arrays.asList("Lars", "Simon");
+		List<String> list5 = Arrays.asList("Lars", "Simon", "Bob");
+		ListSet<String> listset = new ListSet<>(list4);
+		listset.addAll(list4);
+		listset.removeAll(list4);
+		listset.clear();
+		listset.addAll(list4);
+		listset.retainAll(list4);
+		listset.toArray();
+		listset.getIndexOf("a");
+		listset.getIndexOf("00030");
+		listset.remove("329840");
+		listset.containsAll(list5);
+		listset.contains(list5);
+        listset.contains(list4);		
 		ListSet<String> ls = new ListSet<>();
 		ls.add("a");
 		ls.add("b");

@@ -54,7 +54,22 @@ public class TestFormalContext extends TestCase {
 		// context.addAttribute("f");
 		// context.addAttribute("g");
 		System.out.println("Attributes: " + context.getAttributes());
-
+		//test getters 
+		context.getAttributeAtIndex(0);
+		context.getAttributeCount();
+		context.getExpert();
+		context.getConceptLattice();
+		context.getExtents();
+		context.getDuquenneGuiguesBase();
+		context.getImplications();
+		context.getObjects();
+		context.getStemBase();
+		//context.getObjectAtIndex(0);
+		context.getAttributes();
+		context.getCurrentQuestion();
+		context.getConcepts();
+		context.getObjectCount();
+		
 		expert.addExpertActionListener(context);
 		context.setExpert(expert);
 
