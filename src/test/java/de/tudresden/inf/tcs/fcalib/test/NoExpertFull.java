@@ -72,7 +72,12 @@ public class NoExpertFull<A> extends AbstractExpert<A,String,FullObject<A,String
 	public synchronized void requestCounterExample(FCAImplication<A> question) {
 		FullObject<A,String> counterExample = new FullObject<>(name + "", question.getPremise());
 		++name;
-
+		counterExample.setName("");
+		counterExample.getDescription();
+		counterExample.getIdentifier();
+		counterExample.getName();
+		FullObject<A, String> anotherExample = new FullObject<>("name");
+		anotherExample.getName();
 		ExpertAction action =
 				new CounterExampleProvidedAction<>(theContext, question, counterExample);
 		fireExpertAction(action);
@@ -89,6 +94,11 @@ public class NoExpertFull<A> extends AbstractExpert<A,String,FullObject<A,String
 				 new QuestionRejectedAction<>();
 		 action.setContext(theContext);
 		 action.setQuestion(question);
+		 action.getContext();
+		 action.getQuestion();
+		 action.getKeys();
+		 action.getPropertyChangeListeners();
+		 action.getValue(null);
 		 fireExpertAction(action);
 	}
 

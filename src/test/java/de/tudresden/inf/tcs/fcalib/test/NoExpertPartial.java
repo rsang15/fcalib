@@ -82,6 +82,11 @@ public class NoExpertPartial<A> extends AbstractExpert<A,String,PartialObject<A,
 			// 		counterExample);
 				new CounterExampleProvidedAction<>(theContext, question, counterExample);
 		fireExpertAction(action);
+		counterExample.getDescription().addAttribute((A) question.getConclusion());
+		counterExample.getDescription().clone();
+		counterExample.getDescription().getNegatedAttributes();
+		counterExample.getDescription().containsAttribute((A) question.getConclusion());
+		
 	}
 	
 	/**
