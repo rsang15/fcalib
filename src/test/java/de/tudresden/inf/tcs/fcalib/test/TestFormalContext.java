@@ -7,13 +7,14 @@ package de.tudresden.inf.tcs.fcalib.test;
 import junit.framework.TestCase;
 
 import org.apache.log4j.BasicConfigurator;
-
-import de.tudresden.inf.tcs.fcaapi.exception.IllegalContextException;
-import de.tudresden.inf.tcs.fcaapi.exception.IllegalExpertException;
-import de.tudresden.inf.tcs.fcaapi.exception.IllegalObjectException;
 import de.tudresden.inf.tcs.fcalib.FormalContext;
 import de.tudresden.inf.tcs.fcalib.FullObject;
+import de.tudresden.inf.tcs.fcalib.action.ChangeAttributeOrderAction;
+import de.tudresden.inf.tcs.fcalib.action.CounterExampleProvidedAction;
+import de.tudresden.inf.tcs.fcalib.action.QuestionConfirmedAction;
+import de.tudresden.inf.tcs.fcalib.action.ResetExplorationAction;
 import de.tudresden.inf.tcs.fcalib.action.StartExplorationAction;
+import de.tudresden.inf.tcs.fcalib.action.StopExplorationAction;
 
 /*
  * FCAlib: An open-source extensible library for Formal Concept Analysis 
@@ -35,7 +36,7 @@ import de.tudresden.inf.tcs.fcalib.action.StartExplorationAction;
  * along with FCAlib.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class TestFormalContext extends TestCase {
+public class TestFormalContext<O> extends TestCase {
 
 	public TestFormalContext() {
 	}
@@ -64,7 +65,7 @@ public class TestFormalContext extends TestCase {
 		context.getImplications();
 		context.getObjects();
 		context.getStemBase();
-		//context.getObjectAtIndex(0);
+	
 		context.getAttributes();
 		context.getCurrentQuestion();
 		context.getConcepts();
@@ -73,10 +74,26 @@ public class TestFormalContext extends TestCase {
 		
 		expert.addExpertActionListener(context);
 		context.setExpert(expert);
-
+		
 		StartExplorationAction<String, String, FullObject<String, String>> action = new StartExplorationAction<>();
 		action.setContext(context);
+
+		//context.addObjects((new Set<FullObject<String, String>>() set) );
 		expert.fireExpertAction(action);
+		//NOTE: HAD TO SET THIS TO PUBLIC FOR TEST
+		//ADD THIS TO NOT POSSIBLE TO COVER
+		ResetExplorationAction<String, String, FullObject<String, String>> action2 = new ResetExplorationAction<String, String, FullObject<String, String>>(context);
+		action2.setContext(context);
+		StopExplorationAction<String, String, FullObject<String, String>> action3 = new StopExplorationAction<String, String, FullObject<String, String>>();
+		action3.setContext(context);
+		action3.getContext();
+		expert.fireExpertAction(action3);
+		expert.fireExpertAction(action2);
+		QuestionConfirmedAction<String, String, FullObject<String, String>> action4 = new QuestionConfirmedAction<String, String, FullObject<String, String>>();
+		action4.setContext(context);
+		action4.getKeys();
+		ChangeAttributeOrderAction<String, String, FullObject<String, String>> action5 = new ChangeAttributeOrderAction<String, String, FullObject<String, String>>();
+		action5.setContext(context);
 	}
 
 }

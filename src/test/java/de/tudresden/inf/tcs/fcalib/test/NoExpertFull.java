@@ -5,6 +5,8 @@
  */
 package de.tudresden.inf.tcs.fcalib.test;
 
+import java.awt.event.ActionEvent;
+
 import org.apache.log4j.Logger;
 
 import de.tudresden.inf.tcs.fcaapi.Expert;
@@ -99,7 +101,10 @@ public class NoExpertFull<A> extends AbstractExpert<A,String,FullObject<A,String
 		 action.getKeys();
 		 action.getPropertyChangeListeners();
 		 action.getValue(null);
+		 question.getConclusion();
+		 question.getPremise();
 		 fireExpertAction(action);
+		 
 	}
 
 	// @Override

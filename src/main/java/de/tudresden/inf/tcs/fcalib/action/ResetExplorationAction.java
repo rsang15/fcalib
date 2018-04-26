@@ -46,7 +46,7 @@ public class ResetExplorationAction<A,I,O extends FCAObject<A,I>> extends Abstra
 	 */
 	private static final Logger logger = Logger.getLogger(ResetExplorationAction.class);
 	
-	private ResetExplorationAction(AbstractContext<A, I, O> c) {
+	public ResetExplorationAction(AbstractContext<A, I, O> c) {
 		// super(c);
 		setContext(c);
 	}

@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 
 import org.apache.log4j.BasicConfigurator;
 
+import de.tudresden.inf.tcs.fcaapi.exception.IllegalAttributeException;
 import de.tudresden.inf.tcs.fcaapi.exception.IllegalContextException;
 import de.tudresden.inf.tcs.fcaapi.exception.IllegalExpertException;
 import de.tudresden.inf.tcs.fcaapi.exception.IllegalObjectException;
@@ -38,6 +39,12 @@ import de.tudresden.inf.tcs.fcalib.action.StartExplorationAction;
 public class TestPartialContext extends TestCase {
 
 	public TestPartialContext() {
+		IllegalAttributeException IAE = new IllegalAttributeException();
+		IllegalContextException ICE = new IllegalContextException();
+		IllegalContextException ICE2 = new IllegalContextException("message");
+		IllegalExpertException IEE = new IllegalExpertException();
+		IllegalExpertException IEE2 = new IllegalExpertException("message");
+		IllegalObjectException IOE = new IllegalObjectException("message");
 	}
 
 	public void testPartialContext() {
@@ -50,11 +57,23 @@ public class TestPartialContext extends TestCase {
 		context.addAttribute("b");
 		context.addAttribute("c");
 		context.addAttribute("d");
-		// context.addAttribute("e");
-		// context.addAttribute("f");
-		// context.addAttribute("g");
+		try{
+			context.addAttribute("a");
+		} catch(Exception E){
+			assertTrue(E.getClass().equals(IllegalAttributeException.class));
+		}
+		try{
+			context.addAttribute("");
+		} catch(Exception E){
+			assertTrue(E.getClass().equals(IllegalAttributeException.class));
+		}
+
 		context.getAttributeAtIndex(0);
-		//context.getAttributeAtIndex(10);
+		try{
+			context.getAttributeAtIndex(10);
+		} catch (Exception E){
+			assertTrue(E.getClass().equals(IndexOutOfBoundsException.class));
+		}
 		context.getCurrentQuestion();
 		context.getObject("a");
 		//context.getExpert().notify();
@@ -73,7 +92,7 @@ public class TestPartialContext extends TestCase {
 
 		expert.addExpertActionListener(context);
 		context.setExpert(expert);
-
+		
 		StartExplorationAction<String, String, PartialObject<String, String>> action = new StartExplorationAction<>();
 		action.setContext(context);
 		expert.fireExpertAction(action);

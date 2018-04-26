@@ -73,7 +73,7 @@ public class NoExpertPartial<A> extends AbstractExpert<A,String,PartialObject<A,
 		PartialObject<A,String> counterExample = new PartialObject<>(name + "", question.getPremise());
 		++name;
 		Iterator<A> it = question.getConclusion().iterator();
-
+		PartialObject<A,String> counterExample2 = new PartialObject<>(name + "");
 		// add the first attribute in the conclusion of the question as a negated attribute to the
 		// description of counterExample
 		counterExample.getDescription().addNegatedAttribute(it.next());
@@ -86,7 +86,6 @@ public class NoExpertPartial<A> extends AbstractExpert<A,String,PartialObject<A,
 		counterExample.getDescription().clone();
 		counterExample.getDescription().getNegatedAttributes();
 		counterExample.getDescription().containsAttribute((A) question.getConclusion());
-		
 	}
 	
 	/**
