@@ -12,6 +12,7 @@ import de.tudresden.inf.tcs.fcaapi.exception.IllegalAttributeException;
 import de.tudresden.inf.tcs.fcaapi.exception.IllegalContextException;
 import de.tudresden.inf.tcs.fcaapi.exception.IllegalExpertException;
 import de.tudresden.inf.tcs.fcaapi.exception.IllegalObjectException;
+import de.tudresden.inf.tcs.fcalib.FullObject;
 import de.tudresden.inf.tcs.fcalib.PartialContext;
 import de.tudresden.inf.tcs.fcalib.PartialObject;
 import de.tudresden.inf.tcs.fcalib.action.StartExplorationAction;
@@ -47,16 +48,94 @@ public class TestPartialContext extends TestCase {
 		IllegalObjectException IOE = new IllegalObjectException("message");
 	}
 
-	public void testPartialContext() {
+	public void testPartialContext() throws IllegalAttributeException, IllegalObjectException {
 		BasicConfigurator.configure();
 
 		PartialContext<String, String, PartialObject<String, String>> context = new PartialContext<>();
 		NoExpertPartial<String> expert = new NoExpertPartial<>(context);
-		
 		context.addAttribute("a");
+		
+		try{
+			context.addAttributeToObject("a", "object");
+		} catch(Exception E){
+			assertTrue(E.getClass().equals(IllegalObjectException.class));
+		}
+		
+		PartialObject<String, String> o = new PartialObject<>("object");
 		context.addAttribute("b");
 		context.addAttribute("c");
 		context.addAttribute("d");
+		//adding partial object
+		context.addObject(o);
+		
+		//try adding again, fail
+		try{
+			context.addObject(o);
+		}catch(Exception E){
+			assertTrue(E.getClass().equals(IllegalObjectException.class));
+		}
+		//add attribute to object
+		context.addAttributeToObject("a", o.getIdentifier());
+		try{//try to re-add attribute to object and fail
+			context.addAttributeToObject("a", o.getIdentifier());
+		} catch(Exception E){
+			assertTrue(E.getClass().equals(IllegalAttributeException.class));
+		}
+		try{//try to add fake attribute to object
+			context.addAttributeToObject("doesnotexist", o.getIdentifier());
+		} catch(Exception E){
+			assertTrue(E.getClass().equals(IllegalAttributeException.class));
+		}
+		try{//try to add real attribute to fake object
+			context.addAttributeToObject("a", "fakeobjectidentifier");
+		} catch(Exception E){
+			assertTrue(E.getClass().equals(IllegalObjectException.class));
+		}
+		context.removeAttributeFromObject("a", o.getIdentifier());
+		try{//try to re-remove attribute from object and fail
+			context.removeAttributeFromObject("a", o.getIdentifier());
+		} catch(Exception E){
+			assertTrue(E.getClass().equals(IllegalAttributeException.class));
+		}
+		try{//try to remove fake attribute from object
+			context.removeAttributeFromObject("doesnotexist", o.getIdentifier());
+		} catch(Exception E){
+			assertTrue(E.getClass().equals(IllegalAttributeException.class));
+		}
+		try{//try to remove real attribute from fake object
+			context.removeAttributeFromObject("a", "fakeobjectidentifier");
+		} catch(Exception E){
+			assertTrue(E.getClass().equals(IllegalObjectException.class));
+		}
+		
+		context.objectHasAttribute(o, "a");
+		context.objectHasAttribute(o, "doesnotexist");
+		context.objectHasNegatedAttribute(o, "a");
+		context.objectHasNegatedAttribute(o, "doesnotexist");
+		try{//try to add attribute that does not exist to an object
+			context.addAttributeToObject("doesnotexist", o.getIdentifier());
+		}catch(Exception E){
+			assertTrue(E.getClass().equals(IllegalAttributeException.class));
+		}
+		
+		try{//try to add attribute already in object
+			context.addAttributeToObject("a", o.getIdentifier());
+		} catch(Exception E){
+			assertTrue(E.getClass().equals(IllegalAttributeException.class));
+		}
+		//successfully remove
+		context.removeObject(o);
+		try{//fail to remove after already removing
+			context.removeObject(o);
+		} catch(Exception E){
+			assertTrue(E.getClass().equals(IllegalObjectException.class));
+		}
+		//re-add object
+		context.addObject(o);
+		/**
+		 * remove attribute from object tests
+		 */
+		
 		try{
 			context.addAttribute("a");
 		} catch(Exception E){
@@ -76,17 +155,28 @@ public class TestPartialContext extends TestCase {
 		}
 		context.getCurrentQuestion();
 		context.getObject("a");
-		//context.getExpert().notify();
+		context.getObject(o.getIdentifier());
 		context.getAttributeCount();
 		context.getObjectCount();
 		context.clearObjects();
 		context.getStemBase();
-		//context.notify();
-		//context.notifyAll();
 		context.getDuquenneGuiguesBase();
 		context.getAttributes();
-		//context.getObjectAtIndex(0);
-		//context.getObjectAtIndex(10);
+		context.addObject(o);
+		context.getObjectAtIndex(0);
+		context.removeObject(o.getIdentifier());
+		
+		/*****
+		 * BUG HERE - ONLY ON THE IDENTIFIER BEING THE STRING
+		 */
+//		try{//try to remove an object that does not exist
+//			context.removeObject(o.getIdentifier());
+//		}catch(Exception E){
+//			assertTrue(E.getClass().equals(IllegalObjectException.class));
+//		}
+		
+		context.containsObject(o.getIdentifier());
+		context.clearObjects();
 
 		System.out.println("Attributes: " + context.getAttributes());
 
