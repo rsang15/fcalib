@@ -72,7 +72,7 @@ public class QuestionConfirmedAction<A,I,O extends FCAObject<A,I>> extends Abstr
 	 * Returns the question that is confirmed.
 	 * @return the confirmed question
 	 */
-    private FCAImplication<A> getQuestion() {
+    public FCAImplication<A> getQuestion() {
 		return question;
 	}
 }

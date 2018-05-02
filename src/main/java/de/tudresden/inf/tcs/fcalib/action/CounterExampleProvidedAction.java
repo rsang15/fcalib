@@ -71,7 +71,7 @@ public class CounterExampleProvidedAction<A,I,O extends FCAObject<A,I>> extends 
 	 * Returns the counterexample provided by the expert with this action.
 	 * @return the counterexample provided by the expert with this action.
 	 */
-	private O getCounterExample() {
+	public O getCounterExample() {
 		return counterExample;
 	}
 	
