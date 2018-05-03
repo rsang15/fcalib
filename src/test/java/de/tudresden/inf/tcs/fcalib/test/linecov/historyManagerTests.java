@@ -2,6 +2,10 @@ package de.tudresden.inf.tcs.fcalib.test.linecov;
 
 import static org.junit.Assert.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.apache.log4j.BasicConfigurator;
 import org.junit.Before;
 import org.junit.Test;
 import de.tudresden.inf.tcs.fcaapi.Context;
@@ -9,61 +13,84 @@ import de.tudresden.inf.tcs.fcaapi.FCAImplication;
 import de.tudresden.inf.tcs.fcaapi.FCAObject;
 import de.tudresden.inf.tcs.fcaapi.change.ContextChange;
 import de.tudresden.inf.tcs.fcaapi.exception.IllegalObjectException;
+import de.tudresden.inf.tcs.fcalib.FormalContext;
+import de.tudresden.inf.tcs.fcalib.FullObject;
 import de.tudresden.inf.tcs.fcalib.Implication;
 import de.tudresden.inf.tcs.fcalib.change.NewImplicationChange;
 import de.tudresden.inf.tcs.fcalib.change.NewObjectChange;
 import de.tudresden.inf.tcs.fcalib.change.ObjectHasAttributeChange;
-import de.tudresden.inf.tcs.fcaapi.change.ContextChange;
+import de.tudresden.inf.tcs.fcalib.test.NoExpertFull;
 import de.tudresden.inf.tcs.fcalib.change.HistoryManager;
 
 public class historyManagerTests<B> {
 	
-	public FCAImplication<Integer> implication = new Implication<Integer>();
-	public FCAObject<Integer, Integer> object;
-	public Context<Integer,Integer,FCAObject<Integer,Integer>> context;
-	public Context<Integer,?,FCAObject<Integer,?>> context2;
-	public NewImplicationChange<Integer> histman1 = new NewImplicationChange<Integer>(context, implication);
-	public NewObjectChange<Integer> objchange = new NewObjectChange<Integer>(context2, object);
-	public ObjectHasAttributeChange<Integer> attchange = new ObjectHasAttributeChange<Integer>(object, 0);
-	public ContextChange<Integer> cchange;
-	public HistoryManager<Integer, ContextChange<Integer>> histmanager;
-	@Before
-	public void begin(){
+	
+	@Test
+	public void begin() throws IllegalObjectException{
+		Set<String> set1 = new HashSet<>();
+		set1.add("A");
+		set1.add("B");
+		Set<String> set2 = new HashSet<>();
+		set1.add("A");
+		set1.add("B");
+		FCAImplication<String> implication = new Implication<>();
 		
-	}
-	
-	@Test
-	public void testnewimplicationchange1() {
-		//histman1.undo();
-		//NewImplicationChange<int 12,> histman1 = new NewImplicationChange<int 12,>(context, implication);
-		assertTrue(histman1.getType() == ContextChange.NEW_IMPLICATION_MODIFICATION);
-		assertFalse(histman1.getType() == ContextChange.AUTOMATICALLY_ACCEPTED_IMPLICATION);
-		histman1.getType();
-	}
-	
-	@Test(expected = java.lang.NullPointerException.class)
-	public void testnewimplicationchange2() {
-		histman1.undo();
-		histman1.getImplication();
-		histman1.getType();
-		assertFalse(histman1.getImplication().equals(implication));
-	}
-	@Test
-	public void objectchangedtest(){
+		Context<String,?,FCAObject<String,?>> context = null;
+		
+		ContextChange<String> cchange = null;
+		HistoryManager<String, ContextChange<String>> histmanager;
+		
+		BasicConfigurator.configure();
+		
+		FormalContext<String, String> context3 = new FormalContext<>();
+		NoExpertFull<String> expert = new NoExpertFull<>(context3);
+		FullObject<String, String> o = new FullObject<>("object");
+		
+		context3.setExpert(expert);
+		context3.addAttribute("s");
+		context3.addObject(o);
+		context3.setCurrentQuestion(implication);
+		
+		NewImplicationChange<String> impchange = new NewImplicationChange<>(context3, implication);
+		
+		
+		//impchange.undo();
+		histmanager = new HistoryManager<String, ContextChange<String>>();
+		
+		NewObjectChange<String> objchange = new NewObjectChange<String>(context, o);
+		ObjectHasAttributeChange<String> attchange = new ObjectHasAttributeChange<>(o, "a");
+		histmanager.add(attchange);
+		context3.addAttributeToObject("s", "object");
+		
+		//objchange.undo();
+		/**
+		 * BUG 2: Does not actually undo, since we can keep undoing
+		 * successfully via histmanager
+		 */
+		
+		attchange.undo();
+		//context3.addAttributeToObject("s", "object");
+		histmanager.undo(attchange);
+		//context3.addAttributeToObject("s", "object");
+		histmanager.undoAll();
+		//test getters
+		impchange.getImplication();
+		impchange.getType();
 		objchange.getObject();
 		objchange.getType();
-		//objchange.undo();
-	}
-	@Test
-	public void attchangetests(){
-		attchange.getAttribute();
-		attchange.getType();
 		attchange.getObject();
-	}
-	@Test(expected = java.lang.NullPointerException.class)
-	public void histmantests(){
-		histmanager.push(cchange);
-		histmanager.undo(cchange);
+		attchange.getType();
+		attchange.getAttribute();
 		
+		impchange.getImplication();
+		impchange.getType();
+		
+		assertTrue(impchange.getType() == ContextChange.NEW_IMPLICATION_MODIFICATION);
+		assertFalse(impchange.getType() == ContextChange.AUTOMATICALLY_ACCEPTED_IMPLICATION);
+		impchange.getType();
+		
+		assertTrue(impchange.getImplication().equals(implication));
+		
+		histmanager.push(cchange);
 	}
 }
