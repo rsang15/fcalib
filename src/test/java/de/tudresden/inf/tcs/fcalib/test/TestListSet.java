@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
+import de.tudresden.inf.tcs.fcaapi.exception.IllegalObjectException;
 import de.tudresden.inf.tcs.fcalib.utils.ListSet;
 
 /*
@@ -59,7 +60,8 @@ public class TestListSet extends TestCase {
 		listset.remove("329840");
 		listset.containsAll(list5);
 		listset.contains(list5);
-        listset.contains(list4);		
+        listset.contains(list4);	
+        
 		ListSet<String> ls = new ListSet<>();
 		ls.add("a");
 		ls.add("b");
@@ -104,6 +106,13 @@ public class TestListSet extends TestCase {
 		
 		String[] x = {"ds", "dsf"};
 		list5.toArray(x);
+		
+		ListSet<String> ls1 = new ListSet<>();
+        try{
+        	ls1.add(null);
+		}catch(Exception e){
+			e.getClass().equals(NullPointerException.class);
+		}
 	}
 
 }

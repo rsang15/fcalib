@@ -1,4 +1,6 @@
-GRADLE_BUILD_COMMANDS=org.eclipse.jdt.core.javabuilder
-GRADLE_FILTERS=1.0-projectRelativePath-matches-false-false-build,1.0-projectRelativePath-matches-false-false-.gradle
+#Thu May 03 13:55:38 EDT 2018
 GRADLE_NATURES=org.eclipse.jdt.core.javanature
 eclipse.preferences.version=1
+GRADLE_FILTERS=1.0-projectRelativePath-matches-false-false-build,1.0-projectRelativePath-matches-false-false-.gradle
+GRADLE_BUILD_COMMANDS=org.eclipse.jdt.core.javabuilder
+connection.project.dir=
