@@ -82,6 +82,7 @@ public class NoExpertFull<A> extends AbstractExpert<A,String,FullObject<A,String
 		anotherExample.getName();
 		ExpertAction action =
 				new CounterExampleProvidedAction<>(theContext, question, counterExample);
+		action.getContext();
 		fireExpertAction(action);
 	}
 	
@@ -104,7 +105,6 @@ public class NoExpertFull<A> extends AbstractExpert<A,String,FullObject<A,String
 		 question.getConclusion();
 		 question.getPremise();
 		 fireExpertAction(action);
-		 
 	}
 
 	// @Override

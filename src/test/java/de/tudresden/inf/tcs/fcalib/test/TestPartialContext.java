@@ -6,6 +6,9 @@ package de.tudresden.inf.tcs.fcalib.test;
 
 import junit.framework.TestCase;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.log4j.BasicConfigurator;
 
 import de.tudresden.inf.tcs.fcaapi.exception.IllegalAttributeException;
@@ -56,12 +59,18 @@ public class TestPartialContext extends TestCase {
 		context.addAttribute("a");
 		
 		try{
-			context.addAttributeToObject("a", "object");
+			context.addAttributeToObject("a", "object399");
 		} catch(Exception E){
 			assertTrue(E.getClass().equals(IllegalObjectException.class));
 		}
 		
 		PartialObject<String, String> o = new PartialObject<>("object");
+		PartialObject<String, String> o3 = new PartialObject<>("object3");
+		Set<PartialObject<String,String>> objset = new HashSet<>();
+		objset.add(o);
+		objset.add(o3);
+		o.getName();
+		o.setName("object");
 		context.addAttribute("b");
 		context.addAttribute("c");
 		context.addAttribute("d");
@@ -112,6 +121,7 @@ public class TestPartialContext extends TestCase {
 		context.objectHasAttribute(o, "doesnotexist");
 		context.objectHasNegatedAttribute(o, "a");
 		context.objectHasNegatedAttribute(o, "doesnotexist");
+		
 		try{//try to add attribute that does not exist to an object
 			context.addAttributeToObject("doesnotexist", o.getIdentifier());
 		}catch(Exception E){
@@ -162,6 +172,7 @@ public class TestPartialContext extends TestCase {
 		context.getStemBase();
 		context.getDuquenneGuiguesBase();
 		context.getAttributes();
+		
 		context.addObject(o);
 		context.getObjectAtIndex(0);
 		context.removeObject(o.getIdentifier());
@@ -186,6 +197,29 @@ public class TestPartialContext extends TestCase {
 		StartExplorationAction<String, String, PartialObject<String, String>> action = new StartExplorationAction<>();
 		action.setContext(context);
 		expert.fireExpertAction(action);
+		
+		Set<String> attrs = new HashSet<String>();
+		attrs.add("e");
+		attrs.add("f");
+		context.addAttributes(attrs);
+		Set<String> attrs2 = new HashSet<String>();
+		attrs2.add("g");
+		
+		o.getDescription().containsNegatedAttribute("a");
+		try{
+			o.getDescription().addNegatedAttribute("a");
+		}catch(Exception E){
+			assertTrue(E.getClass().equals(IllegalAttributeException.class));
+		}
+		o.getDescription().addAttribute("a");
+		try{
+			o.getDescription().addAttribute("a");
+		}catch(Exception E){
+			assertTrue(E.getClass().equals(IllegalArgumentException.class));
+		}
+		o.getDescription().containsNegatedAttributes(attrs2);
+		PartialObject<String, String> o4;
+		o4 = new PartialObject("name", attrs, attrs2);
 	}
 
 }

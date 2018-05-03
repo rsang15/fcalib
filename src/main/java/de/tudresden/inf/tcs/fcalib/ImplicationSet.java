@@ -62,6 +62,7 @@ public class ImplicationSet<A> extends LinkedHashSet<FCAImplication<A>>
 	public ImplicationSet(AbstractContext<A, ?, ?> context) {
 		super();
 		this.theContext = context;
+		
 		this.occursInPremises = new Hashtable<>();
 		for (A attr : context.getAttributes()) {
 			this.occursInPremises.put(attr, new HashSet<>());
@@ -110,10 +111,7 @@ public class ImplicationSet<A> extends LinkedHashSet<FCAImplication<A>>
 		Set<A> update = new HashSet<>(x);
 		Set<A> newDep = new LinkedHashSet<>(x);
 		Hashtable<FCAImplication<A>, Integer> premiseSizes = new Hashtable<>();
-
-		// update.addAll(x);
-		// newDep.addAll(x);
-
+		
 		for (FCAImplication<A> imp : this) {
 			premiseSizes.put(imp, imp.getPremise().size());
 			if (imp.getPremise().isEmpty()) {

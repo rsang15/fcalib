@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.apache.log4j.BasicConfigurator;
 
+import de.tudresden.inf.tcs.fcaapi.action.ExpertAction;
 import de.tudresden.inf.tcs.fcaapi.exception.IllegalAttributeException;
 import de.tudresden.inf.tcs.fcaapi.exception.IllegalObjectException;
 import de.tudresden.inf.tcs.fcalib.FormalContext;
@@ -150,7 +151,6 @@ public class TestFormalContext<O> extends TestCase {
 		StartExplorationAction<String, String, FullObject<String, String>> action = new StartExplorationAction<>();
 		action.setContext(context);
 
-		//context.addObjects((new Set<FullObject<String, String>>() set) );
 		try{
 			expert.fireExpertAction(action);
 		}catch(Exception e){
