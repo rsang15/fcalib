@@ -16,13 +16,16 @@ import de.tudresden.inf.tcs.fcaapi.exception.IllegalObjectException;
 import de.tudresden.inf.tcs.fcalib.FormalContext;
 import de.tudresden.inf.tcs.fcalib.FullObject;
 import de.tudresden.inf.tcs.fcalib.Implication;
+import de.tudresden.inf.tcs.fcalib.PartialContext;
+import de.tudresden.inf.tcs.fcalib.PartialObject;
 import de.tudresden.inf.tcs.fcalib.change.NewImplicationChange;
 import de.tudresden.inf.tcs.fcalib.change.NewObjectChange;
 import de.tudresden.inf.tcs.fcalib.change.ObjectHasAttributeChange;
 import de.tudresden.inf.tcs.fcalib.test.NoExpertFull;
 import de.tudresden.inf.tcs.fcalib.change.HistoryManager;
+import java.util.EventListener;
 
-public class historyManagerTests<B> {
+public class historyManagerTests<B> implements EventListener{
 	
 	
 	@Test
@@ -34,6 +37,7 @@ public class historyManagerTests<B> {
 		set1.add("A");
 		set1.add("B");
 		FCAImplication<String> implication = new Implication<>();
+		Implication<String> imp = new Implication<String>(set1,set2);
 		
 		Context<String,?,FCAObject<String,?>> context = null;
 		
@@ -43,18 +47,20 @@ public class historyManagerTests<B> {
 		BasicConfigurator.configure();
 		
 		FormalContext<String, String> context3 = new FormalContext<>();
+		PartialObject<String, String> partialo = new PartialObject<>("object");
+		FormalContext<String, String, FCAObject<String, String>> context4 = new FormalContext<>();
 		NoExpertFull<String> expert = new NoExpertFull<>(context3);
 		FullObject<String, String> o = new FullObject<>("object");
 		
 		context3.setExpert(expert);
 		context3.addAttribute("s");
 		context3.addObject(o);
-		context3.setCurrentQuestion(implication);
+		context3.setCurrentQuestion(imp);
 		
-		NewImplicationChange<String> impchange = new NewImplicationChange<>(context3, implication);
-		
-		
-		//impchange.undo();
+		NewImplicationChange<String> impchange = new NewImplicationChange<>(context3, imp);
+		context3.initializeExploration();
+		impchange.undo();
+	
 		histmanager = new HistoryManager<String, ContextChange<String>>();
 		
 		NewObjectChange<String> objchange = new NewObjectChange<String>(context, o);
@@ -89,7 +95,7 @@ public class historyManagerTests<B> {
 		assertFalse(impchange.getType() == ContextChange.AUTOMATICALLY_ACCEPTED_IMPLICATION);
 		impchange.getType();
 		
-		assertTrue(impchange.getImplication().equals(implication));
+		assertFalse(impchange.getImplication().equals(implication));
 		
 		histmanager.push(cchange);
 	}
