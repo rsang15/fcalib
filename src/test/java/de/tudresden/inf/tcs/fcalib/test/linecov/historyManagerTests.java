@@ -48,7 +48,7 @@ public class historyManagerTests<B> implements EventListener{
 		
 		FormalContext<String, String> context3 = new FormalContext<>();
 		PartialObject<String, String> partialo = new PartialObject<>("object");
-		FormalContext<String, String, FCAObject<String, String>> context4 = new FormalContext<>();
+		//FormalContext<String, String, FCAObject<String, String>> context4 = new FormalContext<>();
 		NoExpertFull<String> expert = new NoExpertFull<>(context3);
 		FullObject<String, String> o = new FullObject<>("object");
 		
