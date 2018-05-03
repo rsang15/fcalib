@@ -16,6 +16,7 @@ import de.tudresden.inf.tcs.fcaapi.exception.IllegalContextException;
 import de.tudresden.inf.tcs.fcaapi.exception.IllegalExpertException;
 import de.tudresden.inf.tcs.fcaapi.exception.IllegalObjectException;
 import de.tudresden.inf.tcs.fcalib.FullObject;
+import de.tudresden.inf.tcs.fcalib.Implication;
 import de.tudresden.inf.tcs.fcalib.PartialContext;
 import de.tudresden.inf.tcs.fcalib.PartialObject;
 import de.tudresden.inf.tcs.fcalib.action.StartExplorationAction;
@@ -220,6 +221,9 @@ public class TestPartialContext extends TestCase {
 		o.getDescription().containsNegatedAttributes(attrs2);
 		PartialObject<String, String> o4;
 		o4 = new PartialObject("name", attrs, attrs2);
+		Implication<String> imp = new Implication<String>(attrs,attrs);
+		context.refutes(imp);
+
 	}
 
 }

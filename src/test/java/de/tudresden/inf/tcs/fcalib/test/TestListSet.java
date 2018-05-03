@@ -101,6 +101,9 @@ public class TestListSet extends TestCase {
 		assertEq(ls, list0);
 		ls.changeOrder();
 		assertEq(ls, list1);
+		
+		String[] x = {"ds", "dsf"};
+		list5.toArray(x);
 	}
 
 }

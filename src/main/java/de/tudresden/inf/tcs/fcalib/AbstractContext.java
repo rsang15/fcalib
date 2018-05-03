@@ -278,7 +278,7 @@ public abstract class AbstractContext<A, I, O extends FCAObject<A, I>>
 	 * @param imp
 	 *            the given implication
 	 */
-	protected void setCurrentQuestion(FCAImplication<A> imp) {
+	public void setCurrentQuestion(FCAImplication<A> imp) {
 		this.currentQuestion = imp;
 	}
 
@@ -586,7 +586,11 @@ public abstract class AbstractContext<A, I, O extends FCAObject<A, I>>
 				conclusion.removeAll(premise);
 				implication = new Implication<>(premise, conclusion);
 				this.currentQuestion = implication;
-				if (followsFromBackgroundKnowledge(implication)) {
+				
+				
+				
+				//***********NOT REACHABLE**************
+				if (followsFromBackgroundKnowledge(implication)) { 
 					logger.debug("Follows from background knowledge: "
 							+ implication);
 					this.implications.add(implication);

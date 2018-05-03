@@ -6,16 +6,20 @@ package de.tudresden.inf.tcs.fcalib.test;
 
 import junit.framework.TestCase;
 
+import java.awt.event.ActionEvent;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.BasicConfigurator;
 
-import de.tudresden.inf.tcs.fcaapi.action.ExpertAction;
+import de.tudresden.inf.tcs.fcaapi.obsolete.ExpertAction;
 import de.tudresden.inf.tcs.fcaapi.exception.IllegalAttributeException;
 import de.tudresden.inf.tcs.fcaapi.exception.IllegalObjectException;
 import de.tudresden.inf.tcs.fcalib.FormalContext;
 import de.tudresden.inf.tcs.fcalib.FullObject;
+import de.tudresden.inf.tcs.fcalib.Implication;
+import de.tudresden.inf.tcs.fcalib.ImplicationSet;
+import de.tudresden.inf.tcs.fcalib.PartialObject;
 import de.tudresden.inf.tcs.fcalib.action.ChangeAttributeOrderAction;
 import de.tudresden.inf.tcs.fcalib.action.CounterExampleProvidedAction;
 import de.tudresden.inf.tcs.fcalib.action.QuestionConfirmedAction;
@@ -48,7 +52,7 @@ public class TestFormalContext<O> extends TestCase {
 	public TestFormalContext() {
 	}
 
-	public void testFormalContext() throws IllegalObjectException {
+	public void testFormalContext() throws IllegalObjectException, CloneNotSupportedException {
 		BasicConfigurator.configure();
 
 		FormalContext<String, String> context = new FormalContext<>();
@@ -151,6 +155,7 @@ public class TestFormalContext<O> extends TestCase {
 		StartExplorationAction<String, String, FullObject<String, String>> action = new StartExplorationAction<>();
 		action.setContext(context);
 
+		//context.addObjects((new Set<FullObject<String, String>>() set) );
 		try{
 			expert.fireExpertAction(action);
 		}catch(Exception e){
@@ -182,12 +187,73 @@ public class TestFormalContext<O> extends TestCase {
 		action5.setContext(context);
 		action5.setContext(context);
 		action5.setEnabled(true);
-		
 		try{
 			expert.fireExpertAction(action5);
 		} catch (Exception e){
 			e.getClass().equals(IndexOutOfBoundsException.class);
 		}
+		try{
+			expert.fireExpertAction(action5);
+		} catch (Exception e){
+			e.getClass().equals(IndexOutOfBoundsException.class);
+		}
+		Set<String> list = new HashSet<String>();
+		list.add("m");
+		list.add("d");
+		list.add("object");
+		Set<FullObject<String,String>> fullObjectList = new HashSet<FullObject<String,String>>();
+		fullObjectList.add(o);
+		context.addAttributes(list);
+		//context.clearObjects();
+		context.addObjects(fullObjectList);
+		Implication<String> imp = new Implication<String>(list,list);
+		context.setCurrentQuestion(imp); //made this public to test it
+		context.initializeExploration();
+		ImplicationSet<String> set = (ImplicationSet<String>) context.getImplications();
+		set.getContext();
+		set.allClosures();
+		set.isClosed(list);
+		Implication<String> imp2 = new Implication<String>();
+		set.add(imp2);
+		set.closure(list);
+		set.add(imp);
+		set.closure(list);
+		
+		Set<String> attrs = new HashSet<String>();
+		attrs.add("e");
+		attrs.add("f");
+		context.addAttributes(attrs);
+		Set<String> attrs2 = new HashSet<String>();
+		attrs2.add("g");
+		
+		o.getDescription().clone();
+		o.getDescription().addAttributes(attrs);
+		context.refutes(imp);
+		context.refutes(imp2);
+
+		Object x = new Object();
+		ExpertAction<String, String> ex = new ExpertAction<String, String>(x, 2); //MADE CLASS PUBLIC
+		ExpertAction<String, String> ex2 = new ExpertAction<String, String>(x, 2, imp); //MADE CLASS PUBLIC
+		ExpertAction<String, String> ex3 = new ExpertAction<String, String>(x, 2, imp, "test"); //MADE CLASS PUBLIC
+		ex3.getType();
+		ex3.getQuestion();
+		ex3.getCounterExample();
+		assertFalse(imp.equals(imp2));
+		Implication<String> imp3 = imp2;
+		assertTrue(imp2.equals(imp3));
+		
+		CounterExampleProvidedAction<String,String,FullObject<String,String>> provided = new CounterExampleProvidedAction<String,String,FullObject<String,String>>(context,imp,o);
+		CounterExampleProvidedAction<String,String,FullObject<String,String>> provided2 = new CounterExampleProvidedAction<String,String,FullObject<String,String>>(null,null,null);
+		provided.getCounterExample();
+		provided2.getCounterExample();
+		
+//		try{
+//			provided.actionPerformed(null);
+//		}catch(Exception e){
+//			e.getClass().equals(IllegalObjectException.class);
+//		}
+		
 	}
 
 }
+

@@ -8,7 +8,8 @@ import java.util.EventObject;
 
 import de.tudresden.inf.tcs.fcaapi.FCAImplication;
 
-class ExpertAction<T,O> extends EventObject {
+//***************MADE IT PUBLIC*******
+public class ExpertAction<T,O> extends EventObject {
 
 	private static final long serialVersionUID = 1L;
 	
