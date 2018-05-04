@@ -75,16 +75,20 @@ public class historyManagerTests<B> implements EventListener{
 		 */
 		
 		attchange.undo();
-		//context3.addAttributeToObject("s", "object");
 		histmanager.undo(attchange);
-		//context3.addAttributeToObject("s", "object");
 		histmanager.undoAll();
 		//test getters
+		/**
+		 * Note: Add Assert Values for to get mutation coverage
+		 */
 		impchange.getImplication();
 		impchange.getType();
-		objchange.getObject();
+		assertTrue(impchange.getType() == ContextChange.NEW_IMPLICATION_MODIFICATION);
+		assertTrue(objchange.getObject() == o);
+		assertTrue(objchange.getType() == ContextChange.NEW_OBJECT_MODIFICATION);
 		objchange.getType();
-		attchange.getObject();
+		assertTrue(attchange.getObject() == o);
+		assertTrue(attchange.getType() == ContextChange.OBJECT_HAS_ATTRIBUTE_MODIFICATION);
 		attchange.getType();
 		attchange.getAttribute();
 		
@@ -93,9 +97,8 @@ public class historyManagerTests<B> implements EventListener{
 		
 		assertTrue(impchange.getType() == ContextChange.NEW_IMPLICATION_MODIFICATION);
 		assertFalse(impchange.getType() == ContextChange.AUTOMATICALLY_ACCEPTED_IMPLICATION);
-		impchange.getType();
-		
 		assertFalse(impchange.getImplication().equals(implication));
+		impchange.getType();
 		
 		histmanager.push(cchange);
 	}

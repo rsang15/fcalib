@@ -77,6 +77,7 @@ public class TestPartialContext extends TestCase {
 		//adding partial object
 		context.addObject(o);
 		
+		
 		//try adding again, fail
 		try{
 			context.addObject(o);
@@ -121,6 +122,7 @@ public class TestPartialContext extends TestCase {
 		context.objectHasAttribute(o, "doesnotexist");
 		context.objectHasNegatedAttribute(o, "a");
 		context.objectHasNegatedAttribute(o, "doesnotexist");
+		
 		
 		try{//try to add attribute that does not exist to an object
 			context.addAttributeToObject("doesnotexist", o.getIdentifier());
@@ -191,14 +193,15 @@ public class TestPartialContext extends TestCase {
 		context.clearObjects();
 
 		System.out.println("Attributes: " + context.getAttributes());
-
+		assertTrue(context.getAttributeCount() != 0);
 		expert.addExpertActionListener(context);
 		context.setExpert(expert);
 		
 		StartExplorationAction<String, String, PartialObject<String, String>> action = new StartExplorationAction<>();
 		action.setContext(context);
 		expert.fireExpertAction(action);
-		
+		assertTrue(action.getContext() != null);
+
 		Set<String> attrs = new HashSet<String>();
 		attrs.add("e");
 		attrs.add("f");
@@ -207,6 +210,9 @@ public class TestPartialContext extends TestCase {
 		attrs2.add("g");
 		
 		o.getDescription().containsNegatedAttribute("a");
+		assertFalse(o.getDescription().containsNegatedAttribute("a"));
+		o.getDescription().addNegatedAttribute("j");
+		assertTrue(o.getDescription().containsNegatedAttribute("j"));
 		try{
 			o.getDescription().addNegatedAttribute("a");
 		}catch(Exception E){
@@ -223,7 +229,27 @@ public class TestPartialContext extends TestCase {
 		o4 = new PartialObject("name", attrs, attrs2);
 		Implication<String> imp = new Implication<String>(attrs,attrs);
 		context.refutes(imp);
-
+		/**
+		 * Mutation coverage additions below
+		 */
+		assertTrue(context.getAttributes() != null);
+		//assertTrue(context.getConcepts() != null);
+		context.setExpert(expert);
+		assertTrue(context.getExpert() != null);
+		//assertTrue(context.getExtents() != null);
+		assertTrue(context.getImplications() != null);
+		assertTrue(context.getCurrentQuestion() != null);
+		context.addObject(o);
+		assertTrue(context.getObjectCount() != 0);
+		assertTrue(context.getObject("object") != null);
+		assertTrue(context.getObjectAtIndex(0) != null);
+		assertTrue(context.objectHasAttribute(o, "a"));
+		assertTrue(context.objectHasNegatedAttribute(o, "j"));
+		assertTrue(context.isExpertSet());
+		
+		assertTrue(o.getName() != null);
+		assertTrue(o.getDescription() != null);
+		assertTrue(o.getIdentifier() != null);
 	}
 
 }

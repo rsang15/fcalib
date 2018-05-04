@@ -17,6 +17,7 @@ import de.tudresden.inf.tcs.fcaapi.exception.IllegalAttributeException;
 import de.tudresden.inf.tcs.fcaapi.exception.IllegalObjectException;
 import de.tudresden.inf.tcs.fcalib.FormalContext;
 import de.tudresden.inf.tcs.fcalib.FullObject;
+import de.tudresden.inf.tcs.fcalib.FullObjectDescription;
 import de.tudresden.inf.tcs.fcalib.Implication;
 import de.tudresden.inf.tcs.fcalib.ImplicationSet;
 import de.tudresden.inf.tcs.fcalib.PartialObject;
@@ -52,7 +53,7 @@ public class TestFormalContext<O> extends TestCase {
 	public TestFormalContext() {
 	}
 
-	public void testFormalContext() throws IllegalObjectException, CloneNotSupportedException {
+	public void testFormalContext() throws IllegalObjectException, CloneNotSupportedException, InstantiationException, IllegalAccessException {
 		BasicConfigurator.configure();
 
 		FormalContext<String, String> context = new FormalContext<>();
@@ -203,6 +204,19 @@ public class TestFormalContext<O> extends TestCase {
 		list.add("object");
 		Set<FullObject<String,String>> fullObjectList = new HashSet<FullObject<String,String>>();
 		fullObjectList.add(o);
+		assertTrue(context.getAttributes() != null);
+		//assertTrue(context.getConcepts() != null);
+		context.setExpert(expert);
+		assertTrue(context.getExpert() != null);
+		//assertTrue(context.getExtents() != null);
+		assertTrue(context.getImplications() != null);
+		assertTrue(context.getCurrentQuestion() != null);
+		context.addObject(o);
+		assertTrue(context.getObjectCount() != 0);
+		assertTrue(context.getObject("object") != null);
+		assertTrue(context.getObjectAtIndex(0) != null);
+		context.removeObject(o);
+		//assertTrue(context.getStemBase() != null);
 		context.addAttributes(list);
 		//context.clearObjects();
 		context.addObjects(fullObjectList);
@@ -211,6 +225,7 @@ public class TestFormalContext<O> extends TestCase {
 		context.initializeExploration();
 		ImplicationSet<String> set = (ImplicationSet<String>) context.getImplications();
 		set.getContext();
+		assertTrue(set.getContext() != null);
 		set.allClosures();
 		set.isClosed(list);
 		Implication<String> imp2 = new Implication<String>();
@@ -226,7 +241,11 @@ public class TestFormalContext<O> extends TestCase {
 		Set<String> attrs2 = new HashSet<String>();
 		attrs2.add("g");
 		
+		assertTrue(set.getContext() != null);
 		o.getDescription().clone();
+		assertTrue(o.getDescription() != null);
+		assertTrue(o.getIdentifier() != null);
+		assertTrue(o.getName() != null);
 		o.getDescription().addAttributes(attrs);
 		context.refutes(imp);
 		context.refutes(imp2);
@@ -242,16 +261,23 @@ public class TestFormalContext<O> extends TestCase {
 		Implication<String> imp3 = imp2;
 		assertTrue(imp2.equals(imp3));
 		
+		assertTrue(ex3.getCounterExample()!= null);
+		assertTrue(ex3.getQuestion() != null);
+		assertTrue(ex3.getSource() != null);
+		assertTrue(ex3.getType() != 0);
+		
 		CounterExampleProvidedAction<String,String,FullObject<String,String>> provided = new CounterExampleProvidedAction<String,String,FullObject<String,String>>(context,imp,o);
 		CounterExampleProvidedAction<String,String,FullObject<String,String>> provided2 = new CounterExampleProvidedAction<String,String,FullObject<String,String>>(null,null,null);
 		provided.getCounterExample();
 		provided2.getCounterExample();
 		
-//		try{
-//			provided.actionPerformed(null);
-//		}catch(Exception e){
-//			e.getClass().equals(IllegalObjectException.class);
-//		}
+		assertTrue(provided.getCounterExample() != null);
+		
+		assertTrue(o.getDescription() != null);
+		assertTrue(o.getName() != null);
+		assertTrue(o.getIdentifier() != null);
+		assertTrue(context.isExpertSet());
+		assertFalse(context.isClosed(a));
 		
 	}
 

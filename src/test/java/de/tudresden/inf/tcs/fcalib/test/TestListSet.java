@@ -113,6 +113,9 @@ public class TestListSet extends TestCase {
 		}catch(Exception e){
 			e.getClass().equals(NullPointerException.class);
 		}
+        assertTrue(listset.getElementAt(0) != null);
+        assertTrue(listset.getIndexOf("lars") != 0);
+        assertFalse(listset.getIndexOf("lars") != -1);
 	}
 
 }
