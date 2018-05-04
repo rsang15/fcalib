@@ -76,7 +76,8 @@ public class TestPartialContext extends TestCase {
 		context.addAttribute("d");
 		//adding partial object
 		assertTrue(context.addObject(o));
-		
+		o.toString();
+		assertTrue(o.toString() != null);
 		
 		//try adding again, fail
 		try{

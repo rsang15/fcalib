@@ -59,6 +59,7 @@ public class TestFormalContext<O> extends TestCase {
 		FormalContext<String, String> context = new FormalContext<>();
 		NoExpertFull<String> expert = new NoExpertFull<>(context);
 		FullObject<String, String> o = new FullObject<>("object");
+		
 		assertTrue(context.addAttribute("a"));
 		context.addAttribute("b");
 		context.addAttribute("c");
@@ -242,7 +243,7 @@ public class TestFormalContext<O> extends TestCase {
 		set.closure(list);
 		set.add(imp);
 		set.closure(list);
-		
+
 		Set<String> attrs = new HashSet<String>();
 		attrs.add("e");
 		attrs.add("f");
@@ -282,6 +283,8 @@ public class TestFormalContext<O> extends TestCase {
 		
 		assertTrue(provided.getCounterExample() != null);
 		
+		o.toString();
+		assertTrue(o.toString() != null);
 		assertTrue(o.getDescription() != null);
 		assertTrue(o.getName() != null);
 		assertTrue(o.getIdentifier() != null);
