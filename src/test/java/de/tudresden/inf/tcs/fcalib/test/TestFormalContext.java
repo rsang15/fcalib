@@ -170,16 +170,24 @@ public class TestFormalContext<O> extends TestCase {
 		//ADD THIS TO NOT POSSIBLE TO COVER
 		ResetExplorationAction<String, String, FullObject<String, String>> action2 = new ResetExplorationAction<String, String, FullObject<String, String>>(context);
 		action2.setContext(context);
+		action2.setEnabled(true);
+		assertTrue(action2.isEnabled());
 		StopExplorationAction<String, String, FullObject<String, String>> action3 = new StopExplorationAction<String, String, FullObject<String, String>>();
 		action3.setContext(context);
+		assertTrue(action3.getContext().equals(context));
+		assertTrue(action2.getContext().equals(context));
+		action3.setEnabled(true);
+		assertTrue(action3.isEnabled());
 		action3.getContext();
 		expert.fireExpertAction(action3);
 		expert.fireExpertAction(action2);
 		QuestionConfirmedAction<String, String, FullObject<String, String>> action4 = new QuestionConfirmedAction<String, String, FullObject<String, String>>();
 		action4.setContext(context);
+		assertTrue(action4.getContext().equals(context));
 		//changed visibility for this as well
 		action4.getQuestion();
 		action4.setQuestion(context.getCurrentQuestion());
+		assertTrue(action4.getQuestion()!=null);
 		action4.getKeys();
 		action4.setContext(context);
 		expert.fireExpertAction(action4);
@@ -187,6 +195,8 @@ public class TestFormalContext<O> extends TestCase {
 		action5.setContext(context);
 		action5.setContext(context);
 		action5.setEnabled(true);
+		assertTrue(action5.isEnabled());
+		assertTrue(action5.getContext()!=null);
 		try{
 			expert.fireExpertAction(action5);
 		} catch (Exception e){
@@ -213,6 +223,10 @@ public class TestFormalContext<O> extends TestCase {
 		set.getContext();
 		set.allClosures();
 		set.isClosed(list);
+		assertTrue(set.isEmpty());
+		set.addAll(context.getImplications());
+		//assertFalse(set.isEmpty());
+		assertTrue(set.getContext() !=null);
 		Implication<String> imp2 = new Implication<String>();
 		set.add(imp2);
 		set.closure(list);

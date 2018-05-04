@@ -56,7 +56,7 @@ public class TestPartialContext extends TestCase {
 
 		PartialContext<String, String, PartialObject<String, String>> context = new PartialContext<>();
 		NoExpertPartial<String> expert = new NoExpertPartial<>(context);
-		context.addAttribute("a");
+		assertTrue(context.addAttribute("a"));
 		
 		try{
 			context.addAttributeToObject("a", "object399");
@@ -67,7 +67,7 @@ public class TestPartialContext extends TestCase {
 		PartialObject<String, String> o = new PartialObject<>("object");
 		PartialObject<String, String> o3 = new PartialObject<>("object3");
 		Set<PartialObject<String,String>> objset = new HashSet<>();
-		objset.add(o);
+		assertTrue(objset.add(o));
 		objset.add(o3);
 		o.getName();
 		o.setName("object");
@@ -75,7 +75,7 @@ public class TestPartialContext extends TestCase {
 		context.addAttribute("c");
 		context.addAttribute("d");
 		//adding partial object
-		context.addObject(o);
+		assertTrue(context.addObject(o));
 		
 		
 		//try adding again, fail
@@ -85,7 +85,7 @@ public class TestPartialContext extends TestCase {
 			assertTrue(E.getClass().equals(IllegalObjectException.class));
 		}
 		//add attribute to object
-		context.addAttributeToObject("a", o.getIdentifier());
+		assertTrue(context.addAttributeToObject("a", o.getIdentifier()));
 		try{//try to re-add attribute to object and fail
 			context.addAttributeToObject("a", o.getIdentifier());
 		} catch(Exception E){
@@ -118,10 +118,10 @@ public class TestPartialContext extends TestCase {
 			assertTrue(E.getClass().equals(IllegalObjectException.class));
 		}
 		
-		context.objectHasAttribute(o, "a");
-		context.objectHasAttribute(o, "doesnotexist");
-		context.objectHasNegatedAttribute(o, "a");
-		context.objectHasNegatedAttribute(o, "doesnotexist");
+		assertFalse(context.objectHasAttribute(o, "a"));
+		assertFalse(context.objectHasAttribute(o, "doesnotexist"));
+		assertFalse(context.objectHasNegatedAttribute(o, "a"));
+		assertFalse(context.objectHasNegatedAttribute(o, "doesnotexist"));
 		
 		
 		try{//try to add attribute that does not exist to an object
@@ -136,14 +136,14 @@ public class TestPartialContext extends TestCase {
 			assertTrue(E.getClass().equals(IllegalAttributeException.class));
 		}
 		//successfully remove
-		context.removeObject(o);
+		assertTrue(context.removeObject(o));
 		try{//fail to remove after already removing
 			context.removeObject(o);
 		} catch(Exception E){
 			assertTrue(E.getClass().equals(IllegalObjectException.class));
 		}
 		//re-add object
-		context.addObject(o);
+		assertTrue(context.addObject(o));
 		/**
 		 * remove attribute from object tests
 		 */
@@ -175,9 +175,9 @@ public class TestPartialContext extends TestCase {
 		context.getDuquenneGuiguesBase();
 		context.getAttributes();
 		
-		context.addObject(o);
+		assertTrue(context.addObject(o));
 		context.getObjectAtIndex(0);
-		context.removeObject(o.getIdentifier());
+		assertTrue(context.removeObject(o.getIdentifier()));
 		
 		/*****
 		 * BUG HERE - ONLY ON THE IDENTIFIER BEING THE STRING
@@ -205,13 +205,13 @@ public class TestPartialContext extends TestCase {
 		Set<String> attrs = new HashSet<String>();
 		attrs.add("e");
 		attrs.add("f");
-		context.addAttributes(attrs);
+		assertTrue(context.addAttributes(attrs));
 		Set<String> attrs2 = new HashSet<String>();
 		attrs2.add("g");
 		
 		o.getDescription().containsNegatedAttribute("a");
 		assertFalse(o.getDescription().containsNegatedAttribute("a"));
-		o.getDescription().addNegatedAttribute("j");
+		assertTrue(o.getDescription().addNegatedAttribute("j"));
 		assertTrue(o.getDescription().containsNegatedAttribute("j"));
 		try{
 			o.getDescription().addNegatedAttribute("a");
@@ -239,7 +239,7 @@ public class TestPartialContext extends TestCase {
 		//assertTrue(context.getExtents() != null);
 		assertTrue(context.getImplications() != null);
 		assertTrue(context.getCurrentQuestion() != null);
-		context.addObject(o);
+		assertTrue(context.addObject(o));
 		assertTrue(context.getObjectCount() != 0);
 		assertTrue(context.getObject("object") != null);
 		assertTrue(context.getObjectAtIndex(0) != null);

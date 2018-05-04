@@ -48,7 +48,7 @@ public class TestListSet extends TestCase {
 		List<String> list4 = Arrays.asList("Lars", "Simon");
 		List<String> list5 = Arrays.asList("Lars", "Simon", "Bob");
 		ListSet<String> listset = new ListSet<>(list4);
-		listset.addAll(list4);
+		assertTrue(listset.addAll(list4));
 		listset.removeAll(list4);
 		listset.clear();
 		listset.addAll(list4);
@@ -61,7 +61,7 @@ public class TestListSet extends TestCase {
 		listset.contains(list5);
         listset.contains(list4);		
 		ListSet<String> ls = new ListSet<>();
-		ls.add("a");
+		assertTrue(ls.add("a"));
 		ls.add("b");
 		ls.add("c");
 		ls.add("d");

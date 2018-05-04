@@ -53,8 +53,8 @@ public class historyManagerTests<B> implements EventListener{
 		FullObject<String, String> o = new FullObject<>("object");
 		
 		context3.setExpert(expert);
-		context3.addAttribute("s");
-		context3.addObject(o);
+		assertTrue(context3.addAttribute("s"));
+		assertTrue(context3.addObject(o));
 		context3.setCurrentQuestion(imp);
 		
 		NewImplicationChange<String> impchange = new NewImplicationChange<>(context3, imp);
@@ -65,8 +65,8 @@ public class historyManagerTests<B> implements EventListener{
 		
 		NewObjectChange<String> objchange = new NewObjectChange<String>(context, o);
 		ObjectHasAttributeChange<String> attchange = new ObjectHasAttributeChange<>(o, "a");
-		histmanager.add(attchange);
-		context3.addAttributeToObject("s", "object");
+		assertTrue(histmanager.add(attchange));
+		assertTrue(context3.addAttributeToObject("s", "object"));
 		
 		//objchange.undo();
 		/**
@@ -86,6 +86,7 @@ public class historyManagerTests<B> implements EventListener{
 		assertTrue(impchange.getType() == ContextChange.NEW_IMPLICATION_MODIFICATION);
 		assertTrue(objchange.getObject() == o);
 		assertTrue(objchange.getType() == ContextChange.NEW_OBJECT_MODIFICATION);
+		assertTrue(attchange.getAttribute() != null);
 		objchange.getType();
 		assertTrue(attchange.getObject() == o);
 		assertTrue(attchange.getType() == ContextChange.OBJECT_HAS_ATTRIBUTE_MODIFICATION);

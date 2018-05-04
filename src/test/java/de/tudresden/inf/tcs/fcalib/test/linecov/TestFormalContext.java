@@ -59,7 +59,7 @@ public class TestFormalContext<O> extends TestCase {
 		FormalContext<String, String> context = new FormalContext<>();
 		NoExpertFull<String> expert = new NoExpertFull<>(context);
 		FullObject<String, String> o = new FullObject<>("object");
-		context.addAttribute("a");
+		assertTrue(context.addAttribute("a"));
 		context.addAttribute("b");
 		context.addAttribute("c");
 		try{
@@ -84,10 +84,10 @@ public class TestFormalContext<O> extends TestCase {
 		context.getConceptLattice();
 		context.getObject(o.getIdentifier());
 		context.getObject("a");
-		context.removeObject(o);
-		context.addObject(o);
+		assertTrue(context.removeObject(o));
+		assertTrue(context.addObject(o));
 		//successfully add attribute to object
-		context.addAttributeToObject("a", o.getIdentifier());
+		assertTrue(context.addAttributeToObject("a", o.getIdentifier()));
 		//fail when trying to add same attribute again 
 		try{
 			context.addAttributeToObject("a", o.getIdentifier());
@@ -101,9 +101,9 @@ public class TestFormalContext<O> extends TestCase {
 			assertTrue(e.getClass().equals(IllegalObjectException.class));
 		}
 		//cover when object does have attribute
-		context.objectHasAttribute(o, "a");
+		assertTrue(context.objectHasAttribute(o, "a"));
 		//successfully remove attribute from an object
-		context.removeAttributeFromObject("a", o.getIdentifier());
+		assertTrue(context.removeAttributeFromObject("a", o.getIdentifier()));
 		try{//fail when try to remove it again
 			context.removeAttributeFromObject("a", o.getIdentifier());
 		}catch(Exception e){
@@ -129,7 +129,7 @@ public class TestFormalContext<O> extends TestCase {
 		}catch(Exception e){
 			assertTrue(e.getClass().equals(IllegalAttributeException.class));
 		}
-		context.removeObject("object");
+		assertTrue(context.removeObject("object"));
 		context.clearObjects();
 		try{
 			context.removeObject("a");
@@ -174,6 +174,7 @@ public class TestFormalContext<O> extends TestCase {
 		StopExplorationAction<String, String, FullObject<String, String>> action3 = new StopExplorationAction<String, String, FullObject<String, String>>();
 		action3.setContext(context);
 		action3.getContext();
+		assertTrue(action3.getContext() != null);
 		expert.fireExpertAction(action3);
 		expert.fireExpertAction(action2);
 		QuestionConfirmedAction<String, String, FullObject<String, String>> action4 = new QuestionConfirmedAction<String, String, FullObject<String, String>>();
@@ -181,13 +182,21 @@ public class TestFormalContext<O> extends TestCase {
 		//changed visibility for this as well
 		action4.getQuestion();
 		action4.setQuestion(context.getCurrentQuestion());
+		action4.setEnabled(true);
+		assertTrue(action4.getContext()!= null);
+		assertTrue(action4.isEnabled());
+		assertTrue(action4.getQuestion() != null);
 		action4.getKeys();
 		action4.setContext(context);
+		assertTrue(action4.getContext()!= null);
 		expert.fireExpertAction(action4);
 		ChangeAttributeOrderAction<String, String, FullObject<String, String>> action5 = new ChangeAttributeOrderAction<String, String, FullObject<String, String>>();
 		action5.setContext(context);
 		action5.setContext(context);
+		assertTrue(action5.getContext()!=null);
+		
 		action5.setEnabled(true);
+		assertTrue(action5.isEnabled());
 		try{
 			expert.fireExpertAction(action5);
 		} catch (Exception e){
@@ -217,9 +226,9 @@ public class TestFormalContext<O> extends TestCase {
 		assertTrue(context.getObjectAtIndex(0) != null);
 		context.removeObject(o);
 		//assertTrue(context.getStemBase() != null);
-		context.addAttributes(list);
+		assertTrue(context.addAttributes(list));
 		//context.clearObjects();
-		context.addObjects(fullObjectList);
+		assertTrue(context.addObjects(fullObjectList));
 		Implication<String> imp = new Implication<String>(list,list);
 		context.setCurrentQuestion(imp); //made this public to test it
 		context.initializeExploration();
@@ -237,7 +246,7 @@ public class TestFormalContext<O> extends TestCase {
 		Set<String> attrs = new HashSet<String>();
 		attrs.add("e");
 		attrs.add("f");
-		context.addAttributes(attrs);
+		assertTrue(context.addAttributes(attrs));
 		Set<String> attrs2 = new HashSet<String>();
 		attrs2.add("g");
 		
@@ -246,7 +255,7 @@ public class TestFormalContext<O> extends TestCase {
 		assertTrue(o.getDescription() != null);
 		assertTrue(o.getIdentifier() != null);
 		assertTrue(o.getName() != null);
-		o.getDescription().addAttributes(attrs);
+		assertTrue(o.getDescription().addAttributes(attrs));
 		context.refutes(imp);
 		context.refutes(imp2);
 
