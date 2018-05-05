@@ -78,7 +78,10 @@ public class TestPartialContext extends TestCase {
 		assertTrue(context.addObject(o));
 		o.toString();
 		assertTrue(o.toString() != null);
-		
+		assertTrue(o.getDescription().toString() != null);
+		assertTrue(o.getDescription().clone() != null);
+		o.getDescription().addNegatedAttribute(context.getAttributes().toString());
+		assertFalse(o.getDescription().containsNegatedAttributes(context.getAttributes()));
 		//try adding again, fail
 		try{
 			context.addObject(o);
@@ -123,7 +126,6 @@ public class TestPartialContext extends TestCase {
 		assertFalse(context.objectHasAttribute(o, "doesnotexist"));
 		assertFalse(context.objectHasNegatedAttribute(o, "a"));
 		assertFalse(context.objectHasNegatedAttribute(o, "doesnotexist"));
-		
 		
 		try{//try to add attribute that does not exist to an object
 			context.addAttributeToObject("doesnotexist", o.getIdentifier());
@@ -192,7 +194,7 @@ public class TestPartialContext extends TestCase {
 		
 		context.containsObject(o.getIdentifier());
 		context.clearObjects();
-
+		assertTrue(context.getObjectCount() == 0);
 		System.out.println("Attributes: " + context.getAttributes());
 		assertTrue(context.getAttributeCount() != 0);
 		expert.addExpertActionListener(context);
@@ -229,7 +231,7 @@ public class TestPartialContext extends TestCase {
 		PartialObject<String, String> o4;
 		o4 = new PartialObject("name", attrs, attrs2);
 		Implication<String> imp = new Implication<String>(attrs,attrs);
-		context.refutes(imp);
+		assertFalse(context.refutes(imp));
 		/**
 		 * Mutation coverage additions below
 		 */

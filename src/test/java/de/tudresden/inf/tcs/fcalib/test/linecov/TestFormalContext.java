@@ -24,6 +24,7 @@ import de.tudresden.inf.tcs.fcalib.PartialObject;
 import de.tudresden.inf.tcs.fcalib.action.ChangeAttributeOrderAction;
 import de.tudresden.inf.tcs.fcalib.action.CounterExampleProvidedAction;
 import de.tudresden.inf.tcs.fcalib.action.QuestionConfirmedAction;
+import de.tudresden.inf.tcs.fcalib.action.QuestionRejectedAction;
 import de.tudresden.inf.tcs.fcalib.action.ResetExplorationAction;
 import de.tudresden.inf.tcs.fcalib.action.StartExplorationAction;
 import de.tudresden.inf.tcs.fcalib.action.StopExplorationAction;
@@ -172,12 +173,16 @@ public class TestFormalContext<O> extends TestCase {
 		//ADD THIS TO NOT POSSIBLE TO COVER
 		ResetExplorationAction<String, String, FullObject<String, String>> action2 = new ResetExplorationAction<String, String, FullObject<String, String>>(context);
 		action2.setContext(context);
+		
 		StopExplorationAction<String, String, FullObject<String, String>> action3 = new StopExplorationAction<String, String, FullObject<String, String>>();
 		action3.setContext(context);
 		action3.getContext();
 		assertTrue(action3.getContext() != null);
 		expert.fireExpertAction(action3);
 		expert.fireExpertAction(action2);
+		assertTrue(context.getAttributeCount() == 0);
+		assertTrue(context.getObjectCount() ==0);
+		
 		QuestionConfirmedAction<String, String, FullObject<String, String>> action4 = new QuestionConfirmedAction<String, String, FullObject<String, String>>();
 		action4.setContext(context);
 		//changed visibility for this as well
@@ -186,6 +191,7 @@ public class TestFormalContext<O> extends TestCase {
 		action4.setEnabled(true);
 		assertTrue(action4.getContext()!= null);
 		assertTrue(action4.isEnabled());
+		
 		assertTrue(action4.getQuestion() != null);
 		action4.getKeys();
 		action4.setContext(context);
@@ -236,13 +242,19 @@ public class TestFormalContext<O> extends TestCase {
 		ImplicationSet<String> set = (ImplicationSet<String>) context.getImplications();
 		set.getContext();
 		assertTrue(set.getContext() != null);
+		assertTrue(set.allClosures() != null);
+		assertTrue(set.isClosed(list));
 		set.allClosures();
-		set.isClosed(list);
+		assertTrue(set.isClosed(list));
 		Implication<String> imp2 = new Implication<String>();
-		set.add(imp2);
+		assertTrue(set.add(imp2));
 		set.closure(list);
 		set.add(imp);
 		set.closure(list);
+		assertFalse(context.refutes(imp2));
+		context.clearObjects();
+		assertTrue(context.getObjectCount()==0);
+		assertFalse(context.followsFromBackgroundKnowledge(imp));
 
 		Set<String> attrs = new HashSet<String>();
 		attrs.add("e");
@@ -278,8 +290,20 @@ public class TestFormalContext<O> extends TestCase {
 		
 		CounterExampleProvidedAction<String,String,FullObject<String,String>> provided = new CounterExampleProvidedAction<String,String,FullObject<String,String>>(context,imp,o);
 		CounterExampleProvidedAction<String,String,FullObject<String,String>> provided2 = new CounterExampleProvidedAction<String,String,FullObject<String,String>>(null,null,null);
-		provided.getCounterExample();
+		assertTrue(provided.getCounterExample()!= null);
 		provided2.getCounterExample();
+		
+		QuestionRejectedAction<String,String,FullObject<String,String>> action6 =
+				 new QuestionRejectedAction<>();
+		 action6.setContext(context);
+		 action6.setQuestion(context.getCurrentQuestion());
+		 action6.getContext();
+		 action6.getQuestion();
+		 assertTrue(action6.getQuestion() != null);
+		 assertTrue(action6.getContext() != null);
+		 
+		//stack overflow
+		//expert.fireExpertAction(action6);
 		
 		assertTrue(provided.getCounterExample() != null);
 		

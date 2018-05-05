@@ -45,24 +45,42 @@ public class TestListSet extends TestCase {
 	}
 
 	public void testListSet() {
+		Object o = null;
 		List<String> list4 = Arrays.asList("Lars", "Simon");
 		List<String> list5 = Arrays.asList("Lars", "Simon", "Bob");
 		ListSet<String> listset = new ListSet<>(list4);
+		
+		//make sure null value doesn't work for contains
+		try{
+			listset.contains(o);
+		}catch (Exception e){
+			assertTrue(e.getClass().equals(NullPointerException.class));
+		}
+		
+		//try to add an item twice, fail
+		listset.add("Bobert");
+		assertFalse(listset.add("Bobert"));
+		
 		assertTrue(listset.addAll(list4));
-		listset.removeAll(list4);
+		assertTrue(listset.removeAll(list4));
 		listset.clear();
-		listset.addAll(list4);
-		listset.retainAll(list4);
-		listset.toArray();
-		listset.getIndexOf("a");
-		listset.getIndexOf("00030");
-		listset.remove("329840");
-		listset.containsAll(list5);
+		assertTrue(listset.isEmpty());
+		assertTrue(listset.toString().equals("{ }\n"));
+		assertTrue(listset.getIndexOf("Lars") == -1);
+		//assertNull(listset.getElementAt(1));
+		assertTrue(listset.addAll(list4));
+		assertFalse(listset.retainAll(list4));
+		assertTrue(listset.toArray()!= null);
+		assertTrue(listset.toArray(list4.toArray())!= null);
+		assertTrue(listset.getIndexOf("Lars")==0);
+		assertTrue(listset.getIndexOf("00030")==-1);
+		assertFalse(listset.remove("329840"));
+		assertFalse(listset.containsAll(list5));
 		listset.contains(list5);
         listset.contains(list4);		
 		ListSet<String> ls = new ListSet<>();
 		assertTrue(ls.add("a"));
-		ls.add("b");
+		assertTrue(ls.add("b"));
 		ls.add("c");
 		ls.add("d");
 
@@ -104,6 +122,7 @@ public class TestListSet extends TestCase {
 		
 		String[] x = {"ds", "dsf"};
 		list5.toArray(x);
+		assertNotNull(list5.toString());
 	}
 
 }
