@@ -78,6 +78,7 @@ public class NoExpertFull<A> extends AbstractExpert<A,String,FullObject<A,String
 		counterExample.getDescription();
 		counterExample.getIdentifier();
 		counterExample.getName();
+		
 		FullObject<A, String> anotherExample = new FullObject<>("name");
 		anotherExample.getName();
 		ExpertAction action =

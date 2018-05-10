@@ -55,41 +55,54 @@ public class TestFormalContext<O> extends TestCase {
 	}
 
 	public void testFormalContext() throws IllegalObjectException, CloneNotSupportedException, InstantiationException, IllegalAccessException {
+		/**
+		 * START OF ISP TESTING
+		 */
 		BasicConfigurator.configure();
-
+		
+		//initialize constructors
 		FormalContext<String, String> context = new FormalContext<>();
 		NoExpertFull<String> expert = new NoExpertFull<>(context);
 		FullObject<String, String> o = new FullObject<>("object");
 		
+		//assert you can add attributes 
+		//assertTrue added for mutation testing
 		assertTrue(context.addAttribute("a"));
 		context.addAttribute("b");
 		context.addAttribute("c");
+		
+		//test you can't remove an object that is not in the context
 		try{
 			context.removeObject(o);
 		} catch (Exception e){
 			assertTrue(e.getClass().equals(IllegalObjectException.class));
 		}
+		
+		//test you can't add an object twice
 		context.addObject(o);
 		try{
 			context.addObject(o);
 		} catch (Exception e){
 			assertTrue(e.getClass().equals(IllegalObjectException.class));
 		}
+		
 		//cover when object does not have attribute
 		context.objectHasAttribute(o, "a");
 		context.getObjectAtIndex(0);
 		System.out.println("Attributes: " + context.getAttributes());
-		//test getters 
+		//test getters for line coverage
 		context.getAttributeAtIndex(1);
 		context.getAttributeCount();
 		context.getExpert();
 		context.getConceptLattice();
 		context.getObject(o.getIdentifier());
 		context.getObject("a");
+		//assert you can remove and readd an object
 		assertTrue(context.removeObject(o));
 		assertTrue(context.addObject(o));
 		//successfully add attribute to object
 		assertTrue(context.addAttributeToObject("a", o.getIdentifier()));
+		
 		//fail when trying to add same attribute again 
 		try{
 			context.addAttributeToObject("a", o.getIdentifier());
@@ -126,18 +139,25 @@ public class TestFormalContext<O> extends TestCase {
 		}catch(Exception e){
 			assertTrue(e.getClass().equals(IllegalAttributeException.class));
 		}
-		try{//not a legal attribute
+		//not a legal attribute
+		try{
 			context.addAttributeToObject("asdkfm3", "object");
 		}catch(Exception e){
 			assertTrue(e.getClass().equals(IllegalAttributeException.class));
 		}
+		//assert you can remove object
 		assertTrue(context.removeObject("object"));
 		context.clearObjects();
+		//assert that you can't remove objects after clearing
 		try{
 			context.removeObject("a");
 		}catch(Exception e){
 			assertTrue(e.getClass().equals(NullPointerException.class));
 		}
+		/**
+		 * START OF LINE COVERAGE
+		 */
+		//cover all getters, setters and booleans
 		context.getExtents();
 		context.getDuquenneGuiguesBase();
 		context.getImplications();
@@ -154,6 +174,7 @@ public class TestFormalContext<O> extends TestCase {
 		context.getConcepts();
 		context.getObjectCount();
 		context.getExtents();
+		
 		
 		StartExplorationAction<String, String, FullObject<String, String>> action = new StartExplorationAction<>();
 		action.setContext(context);
@@ -220,11 +241,13 @@ public class TestFormalContext<O> extends TestCase {
 		list.add("object");
 		Set<FullObject<String,String>> fullObjectList = new HashSet<FullObject<String,String>>();
 		fullObjectList.add(o);
+		
+		/**
+		 * START mutation assert functions for context
+		 */
 		assertTrue(context.getAttributes() != null);
-		//assertTrue(context.getConcepts() != null);
 		context.setExpert(expert);
 		assertTrue(context.getExpert() != null);
-		//assertTrue(context.getExtents() != null);
 		assertTrue(context.getImplications() != null);
 		assertTrue(context.getCurrentQuestion() != null);
 		context.addObject(o);
@@ -232,29 +255,29 @@ public class TestFormalContext<O> extends TestCase {
 		assertTrue(context.getObject("object") != null);
 		assertTrue(context.getObjectAtIndex(0) != null);
 		context.removeObject(o);
-		//assertTrue(context.getStemBase() != null);
 		assertTrue(context.addAttributes(list));
-		//context.clearObjects();
 		assertTrue(context.addObjects(fullObjectList));
+		
+		/**
+		 * Begin Implication tests - ISP 
+		 */
 		Implication<String> imp = new Implication<String>(list,list);
 		context.setCurrentQuestion(imp); //made this public to test it
 		context.initializeExploration();
 		ImplicationSet<String> set = (ImplicationSet<String>) context.getImplications();
 		set.getContext();
-		assertTrue(set.getContext() != null);
-		assertTrue(set.allClosures() != null);
-		assertTrue(set.isClosed(list));
+		
 		set.allClosures();
-		assertTrue(set.isClosed(list));
+		assertTrue(set.isClosed(list)); //MUTATION
 		Implication<String> imp2 = new Implication<String>();
-		assertTrue(set.add(imp2));
+		assertTrue(set.add(imp2)); //MUTATION
 		set.closure(list);
 		set.add(imp);
 		set.closure(list);
-		assertFalse(context.refutes(imp2));
+		assertFalse(context.refutes(imp2)); //MUTATION
 		context.clearObjects();
-		assertTrue(context.getObjectCount()==0);
-		assertFalse(context.followsFromBackgroundKnowledge(imp));
+		assertTrue(context.getObjectCount()==0); //MUTATION
+		assertFalse(context.followsFromBackgroundKnowledge(imp)); //MUTATION
 
 		Set<String> attrs = new HashSet<String>();
 		attrs.add("e");
@@ -263,15 +286,15 @@ public class TestFormalContext<O> extends TestCase {
 		Set<String> attrs2 = new HashSet<String>();
 		attrs2.add("g");
 		
-		assertTrue(set.getContext() != null);
+		assertTrue(set.getContext() != null); //MUTATION
 		o.getDescription().clone();
-		assertTrue(o.getDescription() != null);
-		assertTrue(o.getIdentifier() != null);
-		assertTrue(o.getName() != null);
-		assertTrue(o.getDescription().addAttributes(attrs));
 		context.refutes(imp);
 		context.refutes(imp2);
-
+		
+		/**
+		 * Begin Expert Action coverage - ISP AND LINE COVERAGE
+		 */
+		//test expert action contructors and getters 
 		Object x = new Object();
 		ExpertAction<String, String> ex = new ExpertAction<String, String>(x, 2); //MADE CLASS PUBLIC
 		ExpertAction<String, String> ex2 = new ExpertAction<String, String>(x, 2, imp); //MADE CLASS PUBLIC
@@ -283,30 +306,30 @@ public class TestFormalContext<O> extends TestCase {
 		Implication<String> imp3 = imp2;
 		assertTrue(imp2.equals(imp3));
 		
-		assertTrue(ex3.getCounterExample()!= null);
-		assertTrue(ex3.getQuestion() != null);
-		assertTrue(ex3.getSource() != null);
-		assertTrue(ex3.getType() != 0);
-		
+		//test counter example provided action
 		CounterExampleProvidedAction<String,String,FullObject<String,String>> provided = new CounterExampleProvidedAction<String,String,FullObject<String,String>>(context,imp,o);
 		CounterExampleProvidedAction<String,String,FullObject<String,String>> provided2 = new CounterExampleProvidedAction<String,String,FullObject<String,String>>(null,null,null);
 		assertTrue(provided.getCounterExample()!= null);
 		provided2.getCounterExample();
 		
+		//test question rejected action
 		QuestionRejectedAction<String,String,FullObject<String,String>> action6 =
 				 new QuestionRejectedAction<>();
-		 action6.setContext(context);
-		 action6.setQuestion(context.getCurrentQuestion());
-		 action6.getContext();
-		 action6.getQuestion();
-		 assertTrue(action6.getQuestion() != null);
-		 assertTrue(action6.getContext() != null);
-		 
+		action6.setContext(context);
+		action6.setQuestion(context.getCurrentQuestion());
+		action6.getContext();
+		action6.getQuestion();
+		
+		
+		/**
+		 * START OF MUTATION TEST ADDITIONS FOR ACTIONS
+		 * AND VARIOUS UNCOVERED GETTER AND SETTERS FOR RETURNVAL
+		 */
+		
 		//stack overflow
 		//expert.fireExpertAction(action6);
 		
 		assertTrue(provided.getCounterExample() != null);
-		
 		o.toString();
 		assertTrue(o.toString() != null);
 		assertTrue(o.getDescription() != null);
@@ -314,6 +337,23 @@ public class TestFormalContext<O> extends TestCase {
 		assertTrue(o.getIdentifier() != null);
 		assertTrue(context.isExpertSet());
 		assertFalse(context.isClosed(a));
+		assertTrue(action6.getQuestion() != null);
+		assertTrue(action6.getContext() != null);
+		assertTrue(ex3.getCounterExample()!= null);
+		assertTrue(ex3.getQuestion() != null);
+		assertTrue(ex3.getSource() != null);
+		assertTrue(ex3.getType() != 0);
+		assertTrue(o.getDescription() != null);
+		assertTrue(o.getIdentifier() != null);
+		assertTrue(o.getName() != null);
+		assertTrue(o.getDescription().addAttributes(attrs));
+		assertTrue(set.getContext() != null);
+		try{
+			set.allClosures();
+		}catch(Exception e){
+			assertTrue(e.getClass().equals(NullPointerException.class));
+		}
+		assertTrue(set.isClosed(list));
 		
 	}
 
