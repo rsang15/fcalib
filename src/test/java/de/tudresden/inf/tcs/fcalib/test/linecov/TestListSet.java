@@ -31,6 +31,7 @@ import de.tudresden.inf.tcs.fcalib.utils.ListSet;
 public class TestListSet extends TestCase {
 	 
 	List<String> list4 = Arrays.asList("Lars", "Simon");
+	
 	public TestListSet() {
 	}
 
@@ -56,7 +57,10 @@ public class TestListSet extends TestCase {
 		}catch (Exception e){
 			assertTrue(e.getClass().equals(NullPointerException.class));
 		}
-		
+		/**
+		 * functionality testing here - line coverage nothing really needed
+		 * asserts later added for mutation testing
+		 */
 		//try to add an item twice, fail
 		listset.add("Bobert");
 		assertFalse(listset.add("Bobert"));
@@ -76,6 +80,10 @@ public class TestListSet extends TestCase {
 		assertTrue(listset.getIndexOf("00030")==-1);
 		assertFalse(listset.remove("329840"));
 		assertFalse(listset.containsAll(list5));
+		
+		/**
+		 * existing code from here onward
+		 */
 		listset.contains(list5);
         listset.contains(list4);		
 		ListSet<String> ls = new ListSet<>();

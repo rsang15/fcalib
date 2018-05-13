@@ -66,13 +66,16 @@ public class TestFormalContext<O> extends TestCase {
 		FullObject<String, String> o = new FullObject<>("object");
 		
 		//assert you can add attributes 
-		//assertTrue added for mutation testing
+		
+		//Input space req
+		//assertTrue = functionality
 		assertTrue(context.addAttribute("a"));
+		assertTrue(context.addAttribute("ksdjfs"));
 		context.addAttribute("b");
 		context.addAttribute("c");
 		
 		//test you can't remove an object that is not in the context
-		try{
+		try{//functionality
 			context.removeObject(o);
 		} catch (Exception e){
 			assertTrue(e.getClass().equals(IllegalObjectException.class));
@@ -80,7 +83,7 @@ public class TestFormalContext<O> extends TestCase {
 		
 		//test you can't add an object twice
 		context.addObject(o);
-		try{
+		try{//functionality
 			context.addObject(o);
 		} catch (Exception e){
 			assertTrue(e.getClass().equals(IllegalObjectException.class));
@@ -90,27 +93,27 @@ public class TestFormalContext<O> extends TestCase {
 		context.objectHasAttribute(o, "a");
 		context.getObjectAtIndex(0);
 		System.out.println("Attributes: " + context.getAttributes());
-		//test getters for line coverage
+		//test getters for line coverage - all void methods are functionality
 		context.getAttributeAtIndex(1);
 		context.getAttributeCount();
 		context.getExpert();
 		context.getConceptLattice();
 		context.getObject(o.getIdentifier());
 		context.getObject("a");
-		//assert you can remove and readd an object
+		//assert you can remove and read an object
 		assertTrue(context.removeObject(o));
 		assertTrue(context.addObject(o));
 		//successfully add attribute to object
 		assertTrue(context.addAttributeToObject("a", o.getIdentifier()));
 		
 		//fail when trying to add same attribute again 
-		try{
+		try{//functionality
 			context.addAttributeToObject("a", o.getIdentifier());
 		} catch(Exception e){
 			assertTrue(e.getClass().equals(IllegalAttributeException.class));
 		}
 		//fail when add attribute to object that does not exist
-		try{
+		try{//functionality
 			context.addAttributeToObject("a", "object2");
 		} catch(Exception e){
 			assertTrue(e.getClass().equals(IllegalObjectException.class));
@@ -119,33 +122,33 @@ public class TestFormalContext<O> extends TestCase {
 		assertTrue(context.objectHasAttribute(o, "a"));
 		//successfully remove attribute from an object
 		assertTrue(context.removeAttributeFromObject("a", o.getIdentifier()));
-		try{//fail when try to remove it again
+		try{//fail when try to remove it again //functionality
 			context.removeAttributeFromObject("a", o.getIdentifier());
 		}catch(Exception e){
 			assertTrue(e.getClass().equals(IllegalAttributeException.class));
 		}
-		try{//not a legal object
+		try{//not a legal object // functionality
 			context.removeAttributeFromObject("a", "object2");
 		}catch(Exception e){
 			assertTrue(e.getClass().equals(IllegalObjectException.class));
 		}
-		try{//not a legal attribute
+		try{//not a legal attribute // functionality
 			context.removeAttributeFromObject("z", "object");
 		}catch(Exception e){
 			assertTrue(e.getClass().equals(IllegalAttributeException.class));
 		}
-		try{//not in the object
+		try{//not in the object // functionality
 			context.removeAttributeFromObject("e", "object");
 		}catch(Exception e){
 			assertTrue(e.getClass().equals(IllegalAttributeException.class));
 		}
 		//not a legal attribute
-		try{
+		try{//functionality
 			context.addAttributeToObject("asdkfm3", "object");
 		}catch(Exception e){
 			assertTrue(e.getClass().equals(IllegalAttributeException.class));
 		}
-		//assert you can remove object
+		//assert you can remove object //functionality
 		assertTrue(context.removeObject("object"));
 		context.clearObjects();
 		//assert that you can't remove objects after clearing
@@ -175,7 +178,6 @@ public class TestFormalContext<O> extends TestCase {
 		context.getObjectCount();
 		context.getExtents();
 		
-		
 		StartExplorationAction<String, String, FullObject<String, String>> action = new StartExplorationAction<>();
 		action.setContext(context);
 
@@ -190,11 +192,17 @@ public class TestFormalContext<O> extends TestCase {
 		
 		expert.addExpertActionListener(context);
 		expert.fireExpertAction(action);
+		
 		//NOTE: HAD TO SET THIS TO PUBLIC FOR TEST
 		//ADD THIS TO NOT POSSIBLE TO COVER
 		ResetExplorationAction<String, String, FullObject<String, String>> action2 = new ResetExplorationAction<String, String, FullObject<String, String>>(context);
 		action2.setContext(context);
-		
+		/**
+		 * Various action testing here - both functionality and 
+		 * line coverage
+		 * 
+		 * assert statements added later for mutation coverage
+		 */
 		StopExplorationAction<String, String, FullObject<String, String>> action3 = new StopExplorationAction<String, String, FullObject<String, String>>();
 		action3.setContext(context);
 		action3.getContext();
@@ -259,7 +267,7 @@ public class TestFormalContext<O> extends TestCase {
 		assertTrue(context.addObjects(fullObjectList));
 		
 		/**
-		 * Begin Implication tests - ISP 
+		 * Begin Implication tests - ISP and later added for line coverage
 		 */
 		Implication<String> imp = new Implication<String>(list,list);
 		context.setCurrentQuestion(imp); //made this public to test it

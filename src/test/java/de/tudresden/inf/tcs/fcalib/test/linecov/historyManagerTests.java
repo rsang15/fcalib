@@ -30,12 +30,16 @@ public class historyManagerTests<B> implements EventListener{
 	
 	@Test
 	public void begin() throws IllegalObjectException{
+		/**
+		 * Begin functional testing and input space Partitioning
+		 */
 		Set<String> set1 = new HashSet<>();
 		set1.add("A");
 		set1.add("B");
+		set1.add("");
 		Set<String> set2 = new HashSet<>();
-		set1.add("A");
-		set1.add("B");
+		set2.add("A");
+		set2.add("B");
 		FCAImplication<String> implication = new Implication<>();
 		Implication<String> imp = new Implication<String>(set1,set2);
 		
@@ -51,7 +55,9 @@ public class historyManagerTests<B> implements EventListener{
 		//FormalContext<String, String, FCAObject<String, String>> context4 = new FormalContext<>();
 		NoExpertFull<String> expert = new NoExpertFull<>(context3);
 		FullObject<String, String> o = new FullObject<>("object");
-		
+		/**
+		 * Begin line coverage Additions
+		 */
 		context3.setExpert(expert);
 		assertTrue(context3.addAttribute("s"));
 		assertTrue(context3.addObject(o));
@@ -68,7 +74,6 @@ public class historyManagerTests<B> implements EventListener{
 		assertTrue(histmanager.add(attchange));
 		assertTrue(context3.addAttributeToObject("s", "object"));
 		
-		//objchange.undo();
 		/**
 		 * BUG 2: Does not actually undo, since we can keep undoing
 		 * successfully via histmanager
@@ -80,6 +85,7 @@ public class historyManagerTests<B> implements EventListener{
 		//test getters
 		/**
 		 * Note: Add Assert Values for to get mutation coverage
+		 * BEGIN MUTATION COVERAGE
 		 */
 		impchange.getImplication();
 		impchange.getType();
